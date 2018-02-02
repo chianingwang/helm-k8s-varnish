@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: {{ .Values.scale }}
+  template:
+    metadata:
+      labels:
+        app: ngnix
+    spec:
+      containers:
+        - name: ngnix
+          image: nginx:{{ .Values.tag }}
+          ports:
+            - containerPort: 80
