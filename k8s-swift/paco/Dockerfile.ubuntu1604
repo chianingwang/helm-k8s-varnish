@@ -1,0 +1,73 @@
+FROM ubuntu:16.04
+#CMD /bin/bash
+MAINTAINER Johnny Wang <chianingwang@hotmail.com>
+
+# Install repository for latest version of Swift installation
+RUN apt-get update && apt-get install -y ntp vim rsyslog ubuntu-cloud-keyring software-properties-common
+RUN add-apt-repository cloud-archive:pike -y
+RUN apt-get update && apt-get dist-upgrade -y
+
+# Install supervisor for handling sub-process of Swift
+RUN apt-get install -y supervisor
+RUN mkdir -p /var/log/supervisor
+ADD files/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Add disperson file for tempauth
+ADD files/dispersion.conf /etc/swift/dispersion.conf
+
+# Installing Swift supporting file system and utilities
+RUN apt-get install -y xfsprogs rsync rsyslog
+RUN mkdir -p /etc/swift
+
+# Install Swift SAIO (paco) packages  
+RUN mkdir -p /etc/swift
+RUN apt-get install -y swift swift-proxy swift-account swift-container swift-object python-swiftclient python-keystoneclient memcached
+
+# Add Swift required configuration files
+ADD files/proxy-server.conf /etc/swift/proxy-server.conf
+ADD files/rsyncd.conf /etc/rsyncd.conf
+ADD files/account-server.conf /etc/swift/account-server.conf
+ADD files/object-server.conf /etc/swift/object-server.conf
+ADD files/container-server.conf /etc/swift/container-server.conf
+ADD files/swift.conf /etc/swift/swift.conf
+
+# Add logging required configuration files
+ADD files/0-swift.conf /etc/rsyslog.d/0-swift.conf
+ADD files/50-default.conf /etc/rsyslog.d/50-default.conf
+ADD files/rsyslog.conf /etc/rsyslog.conf
+
+# Copy ring files to the Swift directory
+ADD files/account.ring.gz /etc/swift/account.ring.gz
+ADD files/container.ring.gz /etc/swift/container.ring.gz
+ADD files/object.ring.gz /etc/swift/object.ring.gz
+
+# Add rsyslog files
+ADD files/0-swift.conf /etc/rsyslog.d/0-swift.conf
+ADD files/50-default.conf /etc/rsyslog.d/50-default.conf
+ADD files/rsyslog.conf /etc/rsyslog.conf
+
+# Enable Rsync
+RUN perl -pi -e 's/RSYNC_ENABLE=false/RSYNC_ENABLE=true/' /etc/default/rsync
+
+# Install Prometheus swift_exporter for monitoring
+# RUN wget "https://cloud.swiftstack.com/v1/AUTH_support/prometheus/swift_exporter" -O /usr/local/bin/swift_exporter
+# RUN chmod +x /usr/local/bin/swift_exporter
+
+# Permission for Swift
+RUN chown -R swift:swift /etc/swift
+#RUN service supervisor restart
+
+# Prepare mount location and give permission for drives
+RUN mkdir -p mkdir -p /srv/node/sdb1
+RUN mkdir -p /var/cache/swift
+RUN chown -R swift:swift /srv/node
+RUN chown -R swift:swift /var/cache/swift
+
+# Add start.sh
+ADD files/start.sh /usr/local/bin/start.sh
+RUN chmod 755 /usr/local/bin/start.sh
+#CMD /usr/local/bin/start.sh
+
+EXPOSE 8080
+
+ENTRYPOINT /usr/local/bin/start.sh /bin/bash

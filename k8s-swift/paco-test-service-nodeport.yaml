@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: paco-test-pod
+  labels:
+    name: paco-test-pod
+    context: paco-test-k8s-lab
+spec:
+  containers:
+    - name: paco-test
+      image: chianingwang/swift-paco:pike
+      volumeMounts:
+        - mountPath: /srv/node/sdb1
+          name: sdb1-volume
+      command: [ "/bin/bash", "-c", "--" ]
+      args: [ "/usr/local/bin/start.sh && while true; do sleep 30; done;" ]
+      ports:
+        - containerPort: 8080
+        - containerPort: 443
+  volumes:
+  - name: sdb1-volume
+    hostPath:
+      # directory location on host
+      path: /srv/node/sdb1
+      # this field is optional
+      type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paco-test-service
+  labels:
+    name: paco-test-pod
+    context: paco-test-k8s-lab
+spec:
+  type: NodePort
+  ports:
+    # the port that this service should serve on
+    - port: 8080
+      protocol: TCP
+      name: http
+    - port: 443
+      protocol: TCP
+      name: https
+  # label keys and values that must match in order to receive traffic for this service
+  externalIPs: 
+    - 192.168.22.200
+  selector:
+    name: paco-test-pod
+    context: paco-test-k8s-lab
