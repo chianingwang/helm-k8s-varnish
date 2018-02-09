@@ -20,7 +20,7 @@ kind: ReplicationController
 metadata:
   name: varnishssl-ctl
 spec:
-  replicas: 4
+  replicas: 6
   selector:
     app: varnishssl-ctl
   template:
