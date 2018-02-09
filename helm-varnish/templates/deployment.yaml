@@ -10,7 +10,7 @@ spec:
         app: ngnix
     spec:
       containers:
-        - name: ngnix
-          image: nginx:{{ .Values.tag }}
-          ports:
-            - containerPort: 80
+      - name: ngnix
+        image: nginx:{{ .Values.tag }}
+        ports:
+        - containerPort: 80

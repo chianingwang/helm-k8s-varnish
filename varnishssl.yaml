@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: varnishssl-svc
+  labels:
+    app: varnishssl
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  clusterIP: 10.111.137.8
+  ports:
+  - port: 443
+    protocol: TCP
+    name: https
+  selector:
+    app: varnishssl-ctl
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: varnishssl-ctl
+spec:
+  replicas: 4
+  selector:
+    app: varnishssl-ctl
+  template:
+    metadata:
+      name: varnishssl-ctl
+      labels:
+        app: varnishssl-ctl
+    spec:
+      hostAliases:
+      - ip: "192.168.22.200"
+        hostnames:
+        - "helm.swiftstack.org"
+        - "helm"
+      containers:
+        - name: varnishssl
+          image: varnishssl:1.5
+          ports:
+          - containerPort: 443
+          - containerPort: 80
+#---
+#apiVersion: extensions/v1beta1
+#kind: Ingress
+#metadata:
+#  name: varnishssl-ing
+#spec:
+#  tls:
+#  - hosts:
+#    - helm.swiftstack.org
+#    secretName: star-swiftstack-org
+#  rules:
+#  - host: helm.swiftstack.org
+#    http:
+#      paths:
+#      - path: /
+#        backend:
+#          serviceName: varnishssl-svc
+#          servicePort: 443

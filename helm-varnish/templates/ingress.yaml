@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/ssl-redirect: "false"
+#    http.port: "443"
+spec:
+  rules:
+  - host: helm.swiftstack.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx-service
+          servicePort: 80
