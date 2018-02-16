@@ -1,8 +1,10 @@
 # Abstract 
 This solution is for demo purpose and usually swift `PACO` isn't with cert, only with `http`
+
 In this work we use k8s and helm for deployment
  * k8s (kubernetes)
  * helm
+
 In this work , the container includes
  * nginx w/ reverse proxy with ssl to port 80
  * varnish from port 80 to swift endpoint without ssl , port 8080
@@ -339,7 +341,7 @@ $ swift -A https://test.swiftstack.org/auth/v1.0 -U test:tester -K testing stat 
             X-Trans-Id: txd2817f5af51a492f82658-005a872883
 X-Openstack-Request-Id: txd2817f5af51a492f82658-005a872883
 
-# for k8s we use clusterIP: 10.111.137.7
+# for k8s we use clusterIP: 10.111.137.8
 $ swift -A https://test1.swiftstack.org/auth/v1.0 -U test:tester -K testing stat -v testcontainer setup.sh
                    URL: https://test1.swiftstack.org/v1/AUTH_test/testcontainer/setup.sh
             Auth Token: AUTH_tk543375228e3d43d9b2b18bcf8c3b5c8c
