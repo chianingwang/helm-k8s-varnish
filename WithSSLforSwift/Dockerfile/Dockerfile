@@ -20,10 +20,10 @@ ADD varnish/varnish /etc/default/varnish
 ADD varnish/default.vcl /etc/varnish/default.vcl
 ADD stunnel/stunnel.conf /etc/stunnel/stunnel.conf
 
-ADD ssl/star_swiftstack_org.pem /etc/nginx/ssl/star_swiftstack_org.pem
-ADD ssl/star_swiftstack_org.key /etc/nginx/ssl/star_swiftstack_org.key
-RUN chmod 600 /etc/nginx/ssl/star_swiftstack_org.pem
-RUN chmod 600 /etc/nginx/ssl/star_swiftstack_org.pem
+ADD ssl/star_xxx_org.pem /etc/nginx/ssl/star_xxx_org.pem
+ADD ssl/star_xxx_org.key /etc/nginx/ssl/star_xxx_org.key
+RUN chmod 600 /etc/nginx/ssl/star_xxx_org.pem
+RUN chmod 600 /etc/nginx/ssl/star_xxx_org.pem
 
 EXPOSE 443 80 8080
 
