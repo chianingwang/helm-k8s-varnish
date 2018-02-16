@@ -32,13 +32,12 @@ spec:
         app: varnishssl-ctl
     spec:
       hostAliases:
-      - ip: "192.168.22.200"
+      - ip: "192.168.201.153"
         hostnames:
-        - "helm.swiftstack.org"
-        - "helm"
+        - "johnny.swiftstack.org"
       containers:
-        - name: varnishssl
-          image: varnishssl:1.5
+        - name: varnishsslswift
+          image: varnishsslswift:1.2
           ports:
           - containerPort: 443
           - containerPort: 80

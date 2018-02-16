@@ -1,11 +1,12 @@
 # Abstract 
-This solution is for demo purpose and usually swift `PACO` isn't with cert, only with `http`
+This solution is for demo purpose and usually provides cache for swift with cert, only with `https`
 In this work we use k8s and helm for deployment
  * k8s (kubernetes)
  * helm
 In this work , the container includes
  * nginx w/ reverse proxy with ssl to port 80
- * varnish from port 80 to swift endpoint without ssl , port 8080
+ * varnish from port 80 to port 8080
+ * stunnel from port 8080 to swift endpoint with ssl , port 443
 
 # Idea 
 ```
@@ -13,7 +14,9 @@ In this work , the container includes
                Ngnix   |
             <- (80)  <-
            |  Varnish
-           -> (8080) --> NoSSL (8080) Swift Endpoint
+           -> (8080) ->
+              Stunnel  |
+                        -> SSL (443) Swift Endpoint
 ```
 
 # Instruction and Steps
@@ -26,21 +29,26 @@ $ sudo docker build -t="varnishswift:<your prefer version, e.g 1.1 or dev, lates
 ```
 
 ### PS: You might need to change for your usecase
-Since architecture design varnish in container will connect to swift directly with port 8080.
+Since architecture design varnish in container will connect to local with port 8080, this the endpoint connect will from stunnel.
 #### Dockerfile/varnish/default.vcl --> /etc/varnish/default.vcl
-`.host = ` `<your swift without ssl endpoint IP/FQDN>` and `.port = ` `<your swift endpoint port>` 
 ```
 # Default backend definition. Set this to point to your content server.
 backend default {
-    .host = "192.168.22.200";
+    .host = "127.0.0.1";
     .port = "8080";
 }
+```
+#### Dockerfile/stunnel/stunnel.conf --> /etc/stunnel/stunnel.conf
+connect to `<swift cluster endpoint FQDN>:<port>`
+```
+accept = 8080
+connect = johnny.swiftstack.org:443 
 ```
 
 ## Create varnish cluster via k8s 
 ```
 $ cd ..
-$ kubectl create -f k8s-varnish-swift/k8s-varnish-swift.yaml
+$ kubectl create -f k8s-varnish-ssl-swift/k8s-varnish-ssl-swift.yaml
 ```
 
 ### Check k8s create k8s varnish cluster result
@@ -158,7 +166,7 @@ replicationcontroller "varnishssl-ctl" deleted
 ## Create varnish cluster via helm
 ```
 $ cd ..
-$ helm install ./helm-varnish-swift
+$ helm install ./helm-varnish-ssl-swift
 NAME:   quiet-newt
 LAST DEPLOYED: Fri Feb 16 18:51:06 2018
 NAMESPACE: default
@@ -339,7 +347,7 @@ $ swift -A https://test.swiftstack.org/auth/v1.0 -U test:tester -K testing stat 
             X-Trans-Id: txd2817f5af51a492f82658-005a872883
 X-Openstack-Request-Id: txd2817f5af51a492f82658-005a872883
 
-# for k8s we use clusterIP: 10.111.137.7
+# for k8s we use clusterIP: 10.111.137.8
 $ swift -A https://test1.swiftstack.org/auth/v1.0 -U test:tester -K testing stat -v testcontainer setup.sh
                    URL: https://test1.swiftstack.org/v1/AUTH_test/testcontainer/setup.sh
             Auth Token: AUTH_tk543375228e3d43d9b2b18bcf8c3b5c8c

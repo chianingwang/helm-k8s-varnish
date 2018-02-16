@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "helm-varnish-ssl-swift.fullname" . }}
+  labels:
+    app: {{ template "helm-varnish-ssl-swift.name" . }}
+    chart: {{ template "helm-varnish-ssl-swift.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  clusterIP: {{ .Values.service.clusterIP }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: https
+      protocol: TCP
+      name: https
+  selector:
+    app: {{ template "helm-varnish-ssl-swift.name" . }}
+    release: {{ .Release.Name }}

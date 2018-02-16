@@ -1,17 +1,24 @@
-# Default values for helm-varnish-ssl.
+# Default values for helm-varnish-ssl-swift.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+
+#scale: 3
+#tag: "1.13"
 
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: stable
+  repository: varnishsslswift
+  tag: 1.2
   pullPolicy: IfNotPresent
+  hostAliases:
+    ip: "192.168.201.153"
+    hostnames: "johnny.swiftstack.org"
 
 service:
-  type: ClusterIP
-  port: 80
+  type: NodePort
+  clusterIP: 10.111.137.7
+  port: 443
 
 ingress:
   enabled: false
