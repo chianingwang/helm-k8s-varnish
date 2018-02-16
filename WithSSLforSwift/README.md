@@ -22,7 +22,7 @@ In this work , the container includes
 ```
 
 # Instruction and Steps
-## Build `varnishswift` Dcoker Image
+## Build `varnishsslswift` Dcoker Image
 ```
 $ cd helm-k8s-varnish/WithoutSSLforSwift/Dockerfile
 $ sudo docker build -t="varnishswift:1.1" .
@@ -47,13 +47,13 @@ accept = 8080
 connect = johnny.swiftstack.org:443 
 ```
 
-## Create varnish cluster via k8s 
+## Create varnish cluster via `k8s` 
 ```
 $ cd ..
 $ kubectl create -f k8s-varnish-ssl-swift/k8s-varnish-ssl-swift.yaml
 ```
 
-### Check k8s create k8s varnish cluster result
+### Check varnish cluster result in `k8s`
 ```
 $ kubectl get pods
 NAME                   READY     STATUS    RESTARTS   AGE
@@ -130,7 +130,7 @@ External Traffic Policy:  Cluster
 Events:                   <none>
 ```
 
-### k8s scale down demo
+### `k8s scale down` demo
 ```
 $ kubectl get pods
 NAME                                             READY     STATUS    RESTARTS   AGE
@@ -158,14 +158,15 @@ varnishssl-ctl-twbg7                             1/1       Terminating   0      
 
 PS: you can see one pod is Terminating now.
 ```
-### Delete varnish cluster in k8s
+
+### Delete varnish cluster in `k8s`
 ```
 $ kubectl delete -f k8s-varnish-swift/k8s-varnish-swift.yaml
 service "varnishssl-svc" deleted
 replicationcontroller "varnishssl-ctl" deleted
 ```
 
-## Create varnish cluster via helm
+## Create varnish cluster via `helm`
 ```
 $ cd ..
 $ helm install ./helm-varnish-ssl-swift
@@ -189,7 +190,10 @@ NOTES:
   export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services quiet-newt-helm-varnish-swift)
   export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
   echo http://$NODE_IP:$NODE_PORT
+```
 
+### Check varnish cluster result in `helm <k8s>`
+```
 $ kubectl get pods
 NAME                                             READY     STATUS    RESTARTS   AGE
 paco-test-pod                                    1/1       Running   0          1d
@@ -270,7 +274,7 @@ External Traffic Policy:  Cluster
 Events:                   <none>
 ```
 
-### helm scale up demo
+### `helm scale up` demo
 ```
 $ helm list
 NAME      	REVISION	UPDATED                 	STATUS  	CHART                   	NAMESPACE
@@ -307,7 +311,7 @@ quiet-newt-helm-varnish-swift-6b5bf9c44b-qw2xp   1/1       Running   0          
 quiet-newt-helm-varnish-swift-6b5bf9c44b-rtkv4   1/1       Running   0          13m
 ```
 
-### Delete varnish cluster in helm
+### Delete varnish cluster in `helm`
 ```
 $ helm ls
 NAME      	REVISION	UPDATED                 	STATUS  	CHART                   	NAMESPACE
@@ -317,7 +321,7 @@ $ helm delete quiet-newt
 release "quiet-newt" deleted
 ```
 
-## Unit Test 
+## Unit Test via `python-swiftclient`
 ```
 Quick setup /etc/hosts for mapping clusterIP with DNS name 
 $ cat /etc/hosts
