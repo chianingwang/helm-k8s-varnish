@@ -1,5 +1,9 @@
 # Abstract 
 This solution is for demo purpose and usually swift `PACO` isn't with cert, only with `http`
+In this work we use k8s and helm for deployment
+ * k8s (kubernetes)
+ * helm
+
 
 # Idea 
 ```
