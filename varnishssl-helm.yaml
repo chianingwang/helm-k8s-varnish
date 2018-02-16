@@ -1,0 +1,73 @@
+# Source: helm-varnish/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kissed-nightingale-helm-varnish
+  labels:
+    app: helm-varnish
+    chart: helm-varnish-0.1.0
+    release: kissed-nightingale
+    heritage: Tiller
+spec:
+  type: NodePort
+  clusterIP: 10.111.137.7
+  ports:
+    - port: 443
+      targetPort: https
+      protocol: TCP
+      name: https
+  selector:
+    app: helm-varnish
+    release: kissed-nightingale
+---
+# Source: helm-varnish/templates/deployment.yaml
+apiVersion: apps/v1beta2
+kind: Deployment
+#kind: ReplicationController
+metadata:
+  name: kissed-nightingale-helm-varnish
+  labels:
+    app: helm-varnish
+    chart: helm-varnish-0.1.0
+    release: kissed-nightingale
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helm-varnish
+      release: kissed-nightingale
+  template:
+    metadata:
+      labels:
+        app: helm-varnish
+        release: kissed-nightingale
+    spec:
+      hostAliases:
+      - ip: "192.168.22.200"
+        hostnames:
+        - "helm.swiftstack.org"
+        - "helm"
+      containers:
+        - name: helm-varnish
+          image: "varnishssl:1.6"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
+              protocol: TCP
+          #livenessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: 443
+          #    scheme: HTTPS
+          #readinessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: 443
+          #    scheme: HTTPS
+          resources:
+            {}

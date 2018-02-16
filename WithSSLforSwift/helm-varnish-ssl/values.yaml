@@ -1,9 +1,6 @@
-# Default values for varnish.
+# Default values for helm-varnish-ssl.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
-scale: 3
-tag: "1.13"
 
 replicaCount: 1
 

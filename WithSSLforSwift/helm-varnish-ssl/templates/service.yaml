@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "helm-varnish-ssl.fullname" . }}
+  labels:
+    app: {{ template "helm-varnish-ssl.name" . }}
+    chart: {{ template "helm-varnish-ssl.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "helm-varnish-ssl.name" . }}
+    release: {{ .Release.Name }}
