@@ -130,6 +130,12 @@ varnishssl-ctl-twbg7                             1/1       Terminating   0      
 
 PS: you can see one pod is Terminating now.
 ```
+### Delete varnish cluster in k8s
+```
+$ kubectl delete -f k8s-varnish-swift/k8s-varnish-swift.yaml
+service "varnishssl-svc" deleted
+replicationcontroller "varnishssl-ctl" deleted
+```
 
 ## Create varnish cluster via helm
 ```
@@ -274,6 +280,16 @@ quiet-newt-helm-varnish-swift-6b5bf9c44b-qw2xp   1/1       Running   0          
 quiet-newt-helm-varnish-swift-6b5bf9c44b-rtkv4   1/1       Running   0          13m
 ```
 
+### Delete varnish cluster in helm
+```
+$ helm ls
+NAME      	REVISION	UPDATED                 	STATUS  	CHART                   	NAMESPACE
+quiet-newt	2       	Fri Feb 16 19:03:26 2018	DEPLOYED	helm-varnish-swift-0.1.0	default
+
+$ helm delete quiet-newt
+release "quiet-newt" deleted
+```
+
 ## Unit Test 
 ```
 Quick setup /etc/hosts for mapping clusterIP with DNS name 
@@ -332,4 +348,3 @@ PS: Age:0 is the varnish cache age
 
 ```
 
-##            
