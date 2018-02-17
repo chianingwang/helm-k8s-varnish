@@ -25,9 +25,9 @@ In this work , the container includes
 ## Build `varnishsslswift` Dcoker Image
 ```
 $ cd helm-k8s-varnish/WithoutSSLforSwift/Dockerfile
-$ sudo docker build -t="varnishswift:1.1" .
+$ sudo docker build -t="varnishsslswift:1.2" .
 or 
-$ sudo docker build -t="varnishswift:<your prefer version, e.g 1.1 or dev, latest ... >" .
+$ sudo docker build -t="varnishsslswift:<your prefer version, e.g 1.1, 1.2 or dev, latest ... >" .
 ```
 
 ### PS: You might need to change `default.vcl` and `stunnel.conf` for your usecase
