@@ -60,7 +60,8 @@ NAME                   READY     STATUS    RESTARTS   AGE
 paco-test-pod          1/1       Running   0          1d
 varnishssl-ctl-5h9qn   1/1       Running   0          15m
 varnishssl-ctl-twbg7   1/1       Running   0          15m
-
+```
+```
 $ kubectl describe pods varnishssl-ctl-5h9qn
 Name:           varnishssl-ctl-5h9qn
 Namespace:      default
@@ -106,13 +107,15 @@ Events:
   Normal  Pulled                 16m   kubelet, helm      Container image "varnishswift:1.1" already present on machine
   Normal  Created                16m   kubelet, helm      Created container
   Normal  Started                16m   kubelet, helm      Started container
-
+```
+```
 $ kubectl get svc
 NAME                TYPE        CLUSTER-IP      EXTERNAL-IP      PORT(S)                        AGE
 kubernetes          ClusterIP   10.96.0.1       <none>           443/TCP                        9d
 paco-test-service   NodePort    10.105.191.43   192.168.22.200   8080:32334/TCP,443:30173/TCP   1d
 varnishssl-svc      NodePort    10.111.137.8    <none>           443:31492/TCP                  16m
-
+```
+```
 $ kubectl describe svc varnishssl-svc
 Name:                     varnishssl-svc
 Namespace:                default
@@ -137,18 +140,22 @@ NAME                                             READY     STATUS    RESTARTS   
 paco-test-pod                                    1/1       Running   0          1d
 varnishssl-ctl-5h9qn                             1/1       Running   0          34m
 varnishssl-ctl-twbg7                             1/1       Running   0          34m
-
+```
+```
 $ kubectl get rc
 NAME             DESIRED   CURRENT   READY     AGE
 varnishssl-ctl   2         2         2         34m
-
+```
+```
 $ kubectl scale --replicas=1 rc/varnishssl-ctl
 replicationcontroller "varnishssl-ctl" scaled
-
+```
+```
 $ kubectl get rc
 NAME             DESIRED   CURRENT   READY     AGE
 varnishssl-ctl   1         1         1         35m
-
+```
+```
 $ kubectl get pods
 NAME                                             READY     STATUS        RESTARTS   AGE
 paco-test-pod                                    1/1       Running       0          1d
@@ -198,7 +205,8 @@ $ kubectl get pods
 NAME                                             READY     STATUS    RESTARTS   AGE
 paco-test-pod                                    1/1       Running   0          1d
 quiet-newt-helm-varnish-swift-6b5bf9c44b-rtkv4   1/1       Running   0          18s
-
+```
+```
 $ kubectl describe pod quiet-newt-helm-varnish-swift-6b5bf9c44b-rtkv4
 Name:           quiet-newt-helm-varnish-swift-6b5bf9c44b-rtkv4
 Namespace:      default
@@ -247,13 +255,15 @@ Events:
   Normal  Pulled                 46s   kubelet, helm      Container image "varnishswift:1.1" already present on machine
   Normal  Created                46s   kubelet, helm      Created container
   Normal  Started                46s   kubelet, helm      Started container
-
+```
+```
 $ kubectl get svc
 NAME                            TYPE        CLUSTER-IP      EXTERNAL-IP      PORT(S)                        AGE
 kubernetes                      ClusterIP   10.96.0.1       <none>           443/TCP                        9d
 paco-test-service               NodePort    10.105.191.43   192.168.22.200   8080:32334/TCP,443:30173/TCP   1d
 quiet-newt-helm-varnish-swift   NodePort    10.111.137.7    <none>           443:30484/TCP                  58s
-
+```
+```
 $ kubectl describe svc quiet-newt-helm-varnish-swift
 Name:                     quiet-newt-helm-varnish-swift
 Namespace:                default
@@ -303,7 +313,8 @@ NOTES:
   echo http://$NODE_IP:$NODE_PORT
 
 PS: see desired = 2 but since just scale up, available = 1 still
-
+```
+```
 $ kubectl get pods
 NAME                                             READY     STATUS    RESTARTS   AGE
 paco-test-pod                                    1/1       Running   0          1d
@@ -316,7 +327,8 @@ quiet-newt-helm-varnish-swift-6b5bf9c44b-rtkv4   1/1       Running   0          
 $ helm ls
 NAME      	REVISION	UPDATED                 	STATUS  	CHART                   	NAMESPACE
 quiet-newt	2       	Fri Feb 16 19:03:26 2018	DEPLOYED	helm-varnish-swift-0.1.0	default
-
+```
+```
 $ helm delete quiet-newt
 release "quiet-newt" deleted
 ```
