@@ -44,7 +44,7 @@ backend default {
 connect to `<swift cluster endpoint FQDN>:<port>`
 ```
 accept = 8080
-connect = johnny.swiftstack.org:443 
+connect = johnny.xxx.org:443 
 ```
 
 ## Create varnish cluster via `k8s` 
@@ -325,15 +325,15 @@ release "quiet-newt" deleted
 ```
 Quick setup /etc/hosts for mapping clusterIP with DNS name 
 $ cat /etc/hosts
-192.168.22.200	helm.swiftstack.org	helm
-10.32.0.53	s1.swiftstack.org	s1
-10.32.0.54	s2.swiftstack.org	s2
-10.111.137.7	test.swiftstack.org	test
-10.111.137.8	test1.swiftstack.org	test1
+192.168.22.200	helm.xxx.org	helm
+10.32.0.53	s1.xxx.org	s1
+10.32.0.54	s2.xxx.org	s2
+10.111.137.7	test.xxx.org	test
+10.111.137.8	test1.xxx.org	test1
 
 # for helm we use clusterIP: 10.111.137.7
-$ swift -A https://test.swiftstack.org/auth/v1.0 -U test:tester -K testing stat -v testcontainer setup.sh
-                   URL: https://test.swiftstack.org/v1/AUTH_test/testcontainer/setup.sh
+$ swift -A https://test.xxx.org/auth/v1.0 -U test:tester -K testing stat -v testcontainer setup.sh
+                   URL: https://test.xxx.org/v1/AUTH_test/testcontainer/setup.sh
             Auth Token: AUTH_tk543375228e3d43d9b2b18bcf8c3b5c8c
                Account: AUTH_test
              Container: testcontainer
@@ -354,8 +354,8 @@ $ swift -A https://test.swiftstack.org/auth/v1.0 -U test:tester -K testing stat 
 X-Openstack-Request-Id: txd2817f5af51a492f82658-005a872883
 
 # for k8s we use clusterIP: 10.111.137.8
-$ swift -A https://test1.swiftstack.org/auth/v1.0 -U test:tester -K testing stat -v testcontainer setup.sh
-                   URL: https://test1.swiftstack.org/v1/AUTH_test/testcontainer/setup.sh
+$ swift -A https://test1.xxx.org/auth/v1.0 -U test:tester -K testing stat -v testcontainer setup.sh
+                   URL: https://test1.xxx.org/v1/AUTH_test/testcontainer/setup.sh
             Auth Token: AUTH_tk543375228e3d43d9b2b18bcf8c3b5c8c
                Account: AUTH_test
              Container: testcontainer
