@@ -27,7 +27,7 @@ or
 $ sudo docker build -t="varnishswift:<your prefer version, e.g 1.1 or dev, latest ... >" .
 ```
 
-### PS: You might need to change for your usecase
+### PS: You might need to change `default.vcl` for your usecase
 Since architecture design varnish in container will connect to swift directly with port 8080.
 #### Dockerfile/varnish/default.vcl --> /etc/varnish/default.vcl
 `.host = ` `<your swift without ssl endpoint IP/FQDN>` and `.port = ` `<your swift endpoint port>` 

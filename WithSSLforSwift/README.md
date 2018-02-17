@@ -30,7 +30,7 @@ or
 $ sudo docker build -t="varnishswift:<your prefer version, e.g 1.1 or dev, latest ... >" .
 ```
 
-### PS: You might need to change for your usecase
+### PS: You might need to change `default.vcl` and `stunnel.conf` for your usecase
 Since architecture design varnish in container will connect to local with port 8080, this the endpoint connect will from stunnel.
 #### Dockerfile/varnish/default.vcl --> /etc/varnish/default.vcl
 ```
@@ -289,7 +289,8 @@ Events:                   <none>
 $ helm list
 NAME      	REVISION	UPDATED                 	STATUS  	CHART                   	NAMESPACE
 quiet-newt	1       	Fri Feb 16 18:51:06 2018	DEPLOYED	helm-varnish-swift-0.1.0	default
-
+```
+```
 $ helm upgrade --set replicaCount=2 quiet-newt ./helm-varnish-swift
 Release "quiet-newt" has been upgraded. Happy Helming!
 LAST DEPLOYED: Fri Feb 16 19:03:26 2018
