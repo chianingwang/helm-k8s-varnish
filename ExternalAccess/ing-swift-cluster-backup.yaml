@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/ssl-passthrough: "true"
+  name: helm
+  namespace: default
+spec:
+  tls:
+  - hosts:
+    - helm.swiftstack.org
+  rules:
+  - host: helm.swiftstack.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: toned-pika-helm-varnish-ssl-swift
+          servicePort: 443
