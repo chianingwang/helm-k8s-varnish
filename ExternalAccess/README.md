@@ -1,7 +1,7 @@
 # Idea
-
+```
 Client -> ingest -> service -> pods
-
+```
 # Deployment
 ```
 $ kubectl get ing
